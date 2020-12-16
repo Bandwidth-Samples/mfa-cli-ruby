@@ -41,6 +41,12 @@ BANDWIDTH_MESSAGING_APPLICATION_ID   // Your Messaging Application Id created in
 bundle install
 ```
 
+or
+
+```
+gem install bandwidth-sdk
+```
+
 # Run The App
 
 ```
