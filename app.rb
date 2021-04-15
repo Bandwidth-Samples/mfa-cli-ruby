@@ -11,7 +11,7 @@ begin
     BW_USERNAME = ENV.fetch('BW_USERNAME')
     BW_PASSWORD = ENV.fetch('BW_PASSWORD')
     BW_ACCOUNT_ID = ENV.fetch('BW_ACCOUNT_ID')
-    BW_PHONE_NUMBER = ENV.fetch('BW_PHONE_NUMBER')
+    BW_NUMBER = ENV.fetch('BW_NUMBER')
     BW_VOICE_APPLICATION_ID = ENV.fetch('BW_VOICE_APPLICATION_ID')
     BW_MESSAGING_APPLICATION_ID = ENV.fetch('BW_MESSAGING_APPLICATION_ID')
 rescue
@@ -33,7 +33,7 @@ input = gets
 delivery_method = input.chomp
 
 if delivery_method == "messaging"
-    from_phone = BW_PHONE_NUMBER
+    from_phone = BW_NUMBER
     to_phone = recipient_phone_number
     application_id = BW_MESSAGING_APPLICATION_ID
     scope = "scope"
@@ -70,7 +70,7 @@ if delivery_method == "messaging"
         puts "Failure"
     end
 else
-    from_phone = BW_PHONE_NUMBER
+    from_phone = BW_NUMBER
     to_phone = recipient_phone_number
     application_id = BW_VOICE_APPLICATION_ID
     scope = "scope"
