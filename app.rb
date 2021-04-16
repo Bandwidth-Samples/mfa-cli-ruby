@@ -8,20 +8,20 @@ include Bandwidth
 include Bandwidth::TwoFactorAuth
 
 begin
-    BANDWIDTH_USERNAME = ENV.fetch('BANDWIDTH_USERNAME')
-    BANDWIDTH_PASSWORD = ENV.fetch('BANDWIDTH_PASSWORD')
-    BANDWIDTH_ACCOUNT_ID = ENV.fetch('BANDWIDTH_ACCOUNT_ID')
-    BANDWIDTH_PHONE_NUMBER = ENV.fetch('BANDWIDTH_PHONE_NUMBER')
-    BANDWIDTH_VOICE_APPLICATION_ID = ENV.fetch('BANDWIDTH_VOICE_APPLICATION_ID')
-    BANDWIDTH_MESSAGING_APPLICATION_ID = ENV.fetch('BANDWIDTH_MESSAGING_APPLICATION_ID')
+    BW_USERNAME = ENV.fetch('BW_USERNAME')
+    BW_PASSWORD = ENV.fetch('BW_PASSWORD')
+    BW_ACCOUNT_ID = ENV.fetch('BW_ACCOUNT_ID')
+    BW_NUMBER = ENV.fetch('BW_NUMBER')
+    BW_VOICE_APPLICATION_ID = ENV.fetch('BW_VOICE_APPLICATION_ID')
+    BW_MESSAGING_APPLICATION_ID = ENV.fetch('BW_MESSAGING_APPLICATION_ID')
 rescue
     puts "Please set the environmental variables defined in the README"
     exit(-1)
 end
 
 bandwidth_client = Bandwidth::Client.new(
-    two_factor_auth_basic_auth_user_name: BANDWIDTH_USERNAME,
-    two_factor_auth_basic_auth_password: BANDWIDTH_PASSWORD
+    two_factor_auth_basic_auth_user_name: BW_USERNAME,
+    two_factor_auth_basic_auth_password: BW_PASSWORD
 )
 auth_client = bandwidth_client.two_factor_auth_client.client
 
@@ -33,9 +33,9 @@ input = gets
 delivery_method = input.chomp
 
 if delivery_method == "messaging"
-    from_phone = BANDWIDTH_PHONE_NUMBER
+    from_phone = BW_NUMBER
     to_phone = recipient_phone_number
-    application_id = BANDWIDTH_MESSAGING_APPLICATION_ID
+    application_id = BW_MESSAGING_APPLICATION_ID
     scope = "scope"
     digits = 6
 
@@ -47,7 +47,7 @@ if delivery_method == "messaging"
     body.digits = digits
     body.message = "Your temporary {NAME} {SCOPE} code is {CODE}"
 
-    auth_client.create_messaging_two_factor(BANDWIDTH_ACCOUNT_ID, body)  
+    auth_client.create_messaging_two_factor(BW_ACCOUNT_ID, body)  
 
     puts "Please enter your received code: "
     input = gets
@@ -62,7 +62,7 @@ if delivery_method == "messaging"
     body.digits = digits
     body.expiration_time_in_minutes = 3
 
-    response = auth_client.create_verify_two_factor(BANDWIDTH_ACCOUNT_ID, body)
+    response = auth_client.create_verify_two_factor(BW_ACCOUNT_ID, body)
 
     if response.data.valid
         puts "Success!"
@@ -70,9 +70,9 @@ if delivery_method == "messaging"
         puts "Failure"
     end
 else
-    from_phone = BANDWIDTH_PHONE_NUMBER
+    from_phone = BW_NUMBER
     to_phone = recipient_phone_number
-    application_id = BANDWIDTH_VOICE_APPLICATION_ID
+    application_id = BW_VOICE_APPLICATION_ID
     scope = "scope"
     digits = 6
 
@@ -84,7 +84,7 @@ else
     body.digits = digits
     body.message = "Your temporary {NAME} {SCOPE} code is {CODE}"
 
-    auth_client.create_voice_two_factor(BANDWIDTH_ACCOUNT_ID, body)
+    auth_client.create_voice_two_factor(BW_ACCOUNT_ID, body)
 
     puts "Please enter your received code: "
     input = gets
@@ -99,7 +99,7 @@ else
     body.digits = digits
     body.expiration_time_in_minutes = 3
 
-    response = auth_client.create_verify_two_factor(BANDWIDTH_ACCOUNT_ID, body)
+    response = auth_client.create_verify_two_factor(BW_ACCOUNT_ID, body)
 
     if response.data.valid
         print("Success!")
