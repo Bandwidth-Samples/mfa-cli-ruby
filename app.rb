@@ -23,7 +23,7 @@ bandwidth_client = Bandwidth::Client.new(
     two_factor_auth_basic_auth_user_name: BW_USERNAME,
     two_factor_auth_basic_auth_password: BW_PASSWORD
 )
-auth_client = bandwidth_client.two_factor_auth_client.client
+auth_client = bandwidth_client.two_factor_auth_client.mfa
 
 puts "Please enter your phone number in E164 format (+15554443333): "
 input = gets
@@ -54,12 +54,10 @@ if delivery_method == "messaging"
     code = input.chomp 
 
     body = TwoFactorVerifyRequestSchema.new
-    body.from = from_phone
     body.to = to_phone
     body.application_id = application_id
     body.scope = scope
     body.code = code
-    body.digits = digits
     body.expiration_time_in_minutes = 3
 
     response = auth_client.create_verify_two_factor(BW_ACCOUNT_ID, body)
@@ -91,12 +89,10 @@ else
     code = input.chomp
 
     body = TwoFactorVerifyRequestSchema.new
-    body.from = from_phone
     body.to = to_phone
     body.application_id = application_id
     body.scope = scope
     body.code = code
-    body.digits = digits
     body.expiration_time_in_minutes = 3
 
     response = auth_client.create_verify_two_factor(BW_ACCOUNT_ID, body)
